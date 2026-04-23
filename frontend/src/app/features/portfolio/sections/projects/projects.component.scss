@@ -1,0 +1,286 @@
+// ═══════════════════════════════════════════════════════════════
+// PROJECTS SECTION — SCSS matching template classes exactly
+// ═══════════════════════════════════════════════════════════════
+
+.projects {
+  padding: 7rem 0;
+  background: #0A0A0A;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 25%;
+    top: -5%;
+    width: 50vw;
+    height: 50vw;
+    background: radial-gradient(ellipse, rgba(6,182,212,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+}
+
+// ── Grid ────────────────────────────────────────────────────────
+.projects__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-top: 2.5rem;
+
+  @media (max-width: 1024px) { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 640px)  { grid-template-columns: 1fr; }
+}
+
+// ── Project Card ────────────────────────────────────────────────
+.project-card {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 18px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    border-color: rgba(6,182,212,0.2);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(6,182,212,0.05);
+
+    .project-card__overlay { opacity: 1; }
+    .project-card__cta { transform: translateY(0); opacity: 1; }
+  }
+
+  // Featured — top gradient stripe
+  &--featured {
+    grid-column: span 2;
+
+    @media (max-width: 1024px) { grid-column: span 1; }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #06B6D4, #EC4899);
+      z-index: 3;
+    }
+  }
+}
+
+// ── Card Image Area ─────────────────────────────────────────────
+.project-card__image {
+  height: 160px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.project-card__image-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(6,182,212,0.08), rgba(236,72,153,0.08), rgba(249,115,22,0.06));
+
+  span {
+    font-family: 'Cabinet Grotesk', sans-serif;
+    font-size: 4rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #06B6D4, #EC4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    user-select: none;
+  }
+}
+
+.project-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(6,182,212,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  backdrop-filter: blur(4px);
+}
+
+.project-card__cta {
+  font-family: 'Cabinet Grotesk', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #06B6D4;
+  padding: 8px 20px;
+  border: 1px solid rgba(6,182,212,0.4);
+  border-radius: 9999px;
+  background: rgba(6,182,212,0.1);
+  backdrop-filter: blur(12px);
+  transform: translateY(8px);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+// ── Card Body ───────────────────────────────────────────────────
+.project-card__body {
+  padding: 1.25rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1;
+}
+
+.project-card__featured-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #F97316;
+  padding: 3px 10px;
+  border: 1px solid rgba(249,115,22,0.25);
+  border-radius: 9999px;
+  background: rgba(249,115,22,0.08);
+  margin-bottom: 0.25rem;
+  width: fit-content;
+}
+
+.project-card__category {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #06B6D4;
+}
+
+.project-card__title {
+  font-family: 'Cabinet Grotesk', sans-serif;
+  font-size: 1.0625rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.project-card__company {
+  font-size: 0.8rem;
+  color: rgba(156,163,175,0.6);
+}
+
+.project-card__desc {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: rgba(156,163,175,0.8);
+  margin: 0.25rem 0 0.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.project-card__tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-top: auto;
+  padding-top: 0.75rem;
+}
+
+// ── Modal Overlay ────────────────────────────────────────────────
+.project-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.82);
+  backdrop-filter: blur(12px);
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: projectFadeIn 0.25s ease;
+}
+
+@keyframes projectFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.project-modal {
+  background: #111111;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 22px;
+  max-width: 660px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  animation: projectSlideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 40px 120px rgba(0,0,0,0.7);
+  border-top: 2px solid;
+  border-image: linear-gradient(90deg, #06B6D4, #EC4899) 1;
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 9999px; }
+}
+
+@keyframes projectSlideUp {
+  from { transform: translateY(30px) scale(0.96); opacity: 0; }
+  to   { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.project-modal__close {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: all 0.2s;
+  z-index: 2;
+
+  &:hover {
+    border-color: rgba(6,182,212,0.3);
+    color: #06B6D4;
+    background: rgba(6,182,212,0.06);
+  }
+}
+
+.project-modal__header {
+  padding: 2rem 2rem 1.25rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.project-modal__title {
+  font-family: 'Cabinet Grotesk', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0.25rem 0;
+  padding-right: 2.5rem;
+}
+
+.project-modal__desc {
+  padding: 1.5rem 2rem;
+  font-size: 0.9375rem;
+  line-height: 1.8;
+  color: rgba(156,163,175,0.9);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.project-modal__tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 1.5rem 2rem 2rem;
+}

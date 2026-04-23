@@ -1,0 +1,263 @@
+// ═══════════════════════════════════════════════════════════════
+// NAVBAR — Glass scrolled header
+// ═══════════════════════════════════════════════════════════════
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  transition: background 0.4s ease, backdrop-filter 0.4s ease,
+              border-color 0.4s ease, box-shadow 0.4s ease,
+              transform 0.3s ease;
+
+  // Scrolled state
+  &.scrolled {
+    background: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(24px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  // Auto-hide on scroll down
+  &.hidden {
+    transform: translateY(-100%);
+  }
+}
+
+.navbar__container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+// ── Logo ───────────────────────────────────────────────────────
+.navbar__logo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.navbar__logo-text {
+  font-family: 'Cabinet Grotesk', sans-serif;
+  font-size: 1.375rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #06B6D4, #EC4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+}
+
+.navbar__logo-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #06B6D4;
+  box-shadow: 0 0 8px #06B6D4;
+  animation: dotPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.7); }
+}
+
+// ── Desktop Links ──────────────────────────────────────────────
+.navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin-left: auto;
+
+  @media (max-width: 768px) { display: none; }
+}
+
+.navbar__link {
+  display: flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(156, 163, 175, 0.85);
+  text-decoration: none;
+  transition: color 0.2s, background 0.2s;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 16px;
+    height: 1.5px;
+    background: #06B6D4;
+    border-radius: 9999px;
+    transition: transform 0.25s ease;
+  }
+
+  &:hover {
+    color: #fff;
+    background: rgba(255,255,255,0.05);
+
+    &::after { transform: translateX(-50%) scaleX(1); }
+  }
+
+  &.active {
+    color: #06B6D4;
+    background: rgba(6,182,212,0.06);
+
+    &::after { transform: translateX(-50%) scaleX(1); }
+  }
+}
+
+// ── Actions ────────────────────────────────────────────────────
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.navbar__icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  color: rgba(156,163,175,0.8);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: rgba(6,182,212,0.3);
+    background: rgba(6,182,212,0.06);
+    color: #06B6D4;
+  }
+}
+
+.navbar__admin-btn {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 10px;
+  border: 1px solid rgba(6,182,212,0.3);
+  background: rgba(6,182,212,0.06);
+  color: #06B6D4;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  letter-spacing: 0.02em;
+
+  &:hover {
+    background: rgba(6,182,212,0.15);
+    border-color: rgba(6,182,212,0.5);
+    box-shadow: 0 0 20px rgba(6,182,212,0.15);
+  }
+}
+
+// ── Hamburger ──────────────────────────────────────────────────
+.navbar__hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  background: rgba(255,255,255,0.03);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+
+  span {
+    display: block;
+    width: 18px;
+    height: 1.5px;
+    background: rgba(255,255,255,0.7);
+    border-radius: 9999px;
+    transition: all 0.3s ease;
+
+    &:nth-child(1).open {
+      transform: rotate(45deg) translate(4.5px, 4.5px);
+    }
+    &:nth-child(2).open { opacity: 0; transform: scaleX(0); }
+    &:nth-child(3).open {
+      transform: rotate(-45deg) translate(4.5px, -4.5px);
+    }
+  }
+
+  @media (max-width: 768px) { display: flex; }
+}
+
+// ── Mobile Menu ────────────────────────────────────────────────
+.navbar__mobile {
+  position: fixed;
+  inset: 0;
+  background: rgba(10,10,10,0.97);
+  backdrop-filter: blur(24px);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  &.open {
+    opacity: 1;
+    pointer-events: all;
+
+    .navbar__mobile-link {
+      animation: mobileNavIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      @for $i from 1 through 8 {
+        &:nth-child(#{$i}) { animation-delay: #{($i - 1) * 0.05}s; }
+      }
+    }
+  }
+}
+
+@keyframes mobileNavIn {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+.navbar__mobile-link {
+  display: block;
+  padding: 1rem 2rem;
+  font-family: 'Cabinet Grotesk', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  transition: color 0.2s ease;
+  text-align: center;
+
+  &:hover, &.active { color: #06B6D4; }
+}

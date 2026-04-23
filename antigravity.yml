@@ -1,0 +1,52 @@
+# Darshan Nayak Portfolio — Antigravity Deployment Config
+
+services:
+  backend:
+    name: portfolio-api
+    type: nodejs
+    root: ./backend
+    build:
+      command: npm install --production
+    start:
+      command: npm start
+    env:
+      NODE_ENV: production
+      PORT: 3000
+    health_check:
+      path: /api/v1/health
+      interval: 30
+      timeout: 10
+    environment_variables:
+      - MONGODB_URI
+      - JWT_SECRET
+      - JWT_EXPIRES_IN
+      - FRONTEND_URL
+      - ADMIN_EMAIL
+      - ADMIN_PASSWORD
+      - SMTP_HOST
+      - SMTP_PORT
+      - SMTP_USER
+      - SMTP_PASS
+      - CONTACT_EMAIL_TO
+
+  frontend:
+    name: portfolio-web
+    type: static
+    root: ./frontend
+    build:
+      command: npm ci && npm run build -- --configuration production
+      output: dist/frontend/browser
+    routing:
+      - from: /*
+        to: /index.html
+        status: 200
+    headers:
+      - path: /assets/*
+        headers:
+          Cache-Control: public, max-age=31536000, immutable
+      - path: /*.js
+        headers:
+          Cache-Control: public, max-age=31536000, immutable
+      - path: /*.css
+        headers:
+          Cache-Control: public, max-age=31536000, immutable

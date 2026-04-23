@@ -1,0 +1,60 @@
+version: '3.9'
+
+services:
+  mongodb:
+    image: mongo:7-jammy
+    container_name: portfolio-mongo
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_DATABASE: portfolio
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - portfolio-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: portfolio-backend
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      MONGODB_URI: mongodb://mongodb:27017/portfolio
+      JWT_SECRET: ${JWT_SECRET:-dev_secret_change_in_production}
+      JWT_EXPIRES_IN: 7d
+      FRONTEND_URL: http://localhost:4200
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@portfolio.com}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-Admin@123}
+    volumes:
+      - ./backend/uploads:/app/uploads
+    depends_on:
+      - mongodb
+    networks:
+      - portfolio-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: portfolio-frontend
+    restart: unless-stopped
+    ports:
+      - '4200:80'
+    depends_on:
+      - backend
+    networks:
+      - portfolio-network
+
+volumes:
+  mongo_data:
+    driver: local
+
+networks:
+  portfolio-network:
+    driver: bridge

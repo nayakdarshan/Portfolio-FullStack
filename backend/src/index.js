@@ -36,17 +36,22 @@ const allowedOrigins = [
   env.FRONTEND_URL,
   'http://localhost:4200',
   'http://localhost:3000',
+  // Explicit production frontend (fallback if FRONTEND_URL not set)
+  'https://portfolio-frontend-a69k.onrender.com',
 ];
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (Postman, curl, etc.)
+      // Allow requests with no origin (Postman, curl, mobile apps, etc.)
       if (!origin) return callback(null, true);
-      // Allow any localhost port (Angular dev server uses random port)
-      if (origin.startsWith('http://localhost:') || allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
+      // Allow any localhost port (Angular dev server uses random ports)
+      if (origin.startsWith('http://localhost:')) return callback(null, true);
+      // Allow any onrender.com subdomain (covers all Render-hosted frontends)
+      if (origin.endsWith('.onrender.com')) return callback(null, true);
+      // Allow explicitly whitelisted origins
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+
       callback(new Error(`CORS policy violation: origin ${origin} not allowed`));
     },
     credentials: true,

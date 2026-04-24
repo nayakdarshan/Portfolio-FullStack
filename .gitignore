@@ -16,7 +16,6 @@ backend/dist/
 
 # ── Angular ──────────────────────────────────
 frontend/.angular/
-frontend/src/environments/environment.prod.ts
 
 # ── Logs ─────────────────────────────────────
 logs/
